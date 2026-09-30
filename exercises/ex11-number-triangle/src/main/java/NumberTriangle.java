@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 /**
  * Exercise (Chapter: APIs, JSON, and Files) — reading data from a file into objects.
@@ -109,7 +110,24 @@ public class NumberTriangle {
     //       value of wherever you ended up. An empty path means "stay here".
     //       Hint: String#charAt(int) and String#length() are all you need for the
     //       iterative version; a recursive version can use String#substring(1).
-    return 0;
+    NumberTriangle curr = this;
+
+    for (int i = 0; i < path.length(); i++) {
+      char c = path.charAt(i);
+      if (c == 'l') {
+        if (curr.left == null) {
+          return curr.getRoot();
+        }
+        curr = curr.left;
+      }
+      else if (c == 'r') {
+        if (curr.right == null) {
+          return curr.getRoot();
+        }
+        curr = curr.right;
+      }
+    }
+    return curr.getRoot();
   }
 
   /**
@@ -166,26 +184,27 @@ public class NumberTriangle {
     // to work with when reading a file line by line. See the file-reading section
     // of the "APIs, JSON, and Files" chapter.
     BufferedReader br = Files.newBufferedReader(Path.of(fname));
-
-    // TODO: define any variables that you want to use to keep track of things
-    //       between iterations of the loop below (for example, the row of
-    //       NumberTriangle objects that you built on the previous iteration).
-
-    // We need to return the top of the NumberTriangle, so here is a variable for it.
-    NumberTriangle top = null;
+    ArrayList<NumberTriangle> prevTriangles = new ArrayList<>();
 
     String line = br.readLine();
+    NumberTriangle top = new NumberTriangle(Integer.parseInt(line));
+    prevTriangles.add(top);
+    line = br.readLine();
+
     while (line != null) {
 
-      // Remove this line when you are done; it is here so that the starter code
-      // prints the contents of the file when you run it.
-      System.out.println(line);
+      String[] nums = line.split("\\s+");
+      ArrayList<NumberTriangle> currTriangles = new ArrayList<>();
+      for (String strNum : nums) {
+        currTriangles.add(new NumberTriangle(Integer.parseInt(strNum)));
+      }
 
-      // TODO: process the line. Splitting it on spaces gives you the numbers in
-      //       this row; make a NumberTriangle for each one, then wire this row up
-      //       as the children of the previous row. Remember the aliasing: the
-      //       right child of one node is the left child of the next node over.
+      for (int i = 0; i < prevTriangles.size(); i++) {
+        prevTriangles.get(i).setLeft(currTriangles.get(i));
+        prevTriangles.get(i).setRight(currTriangles.get(i+1));
+      }
 
+      prevTriangles = currTriangles;
       // read the next line
       line = br.readLine();
     }
