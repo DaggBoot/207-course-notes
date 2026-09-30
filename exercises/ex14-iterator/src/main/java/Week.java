@@ -1,5 +1,6 @@
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Exercise (Chapter 7: Collections) — making a class {@code Iterable}.
@@ -19,7 +20,7 @@ import java.util.Iterator;
 public class Week implements Iterable<String> {
 
   private final String[] days = {
-    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+          "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
   };
 
   /**
@@ -41,7 +42,24 @@ public class Week implements Iterable<String> {
     //         - next() returns the next day and advances, or throws
     //           java.util.NoSuchElementException if none remain.
     //       Replace the empty iterator below with an instance of your class.
-    return Collections.emptyIterator();
+
+    class WeekIter implements Iterator<String> {
+      private int index = 0;
+
+      @Override
+      public boolean hasNext() {
+        return index < days.length;
+      }
+
+      @Override
+      public String next() {
+        if (!hasNext()) {
+          throw new NoSuchElementException();
+        }
+        return days[index++];
+      }
+    }
+    return new WeekIter();
   }
 
   /** Prints each day of the week, one per line. */
