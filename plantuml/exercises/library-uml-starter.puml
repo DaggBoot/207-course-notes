@@ -27,6 +27,55 @@ abstract class Item {
   + getCatalogueNumber() : String
 }
 
+interface Borrowable {
+  + getLoanPeriod() : int
+  + isAvailable() : boolean
+}
+
+class Book {
+  - loanPeriod : int
+  + getLoanPeriod() : int
+}
+
+class DVD {
+  - loanPeriod : int
+  + getLoanPeriod() : int
+}
+
+class ReferenceItem
+
+abstract class Person {
+  + name : String
+}
+
+class Member {
+  + memberNumber : String
+  + logIn(memberNumber : String) : boolean
+  + placeHold(item : Item) : Hold
+}
+
+class Librarian {
+  + addItem(item : Item) : void
+  + waiveLateFee(member : Member) : void
+}
+
+class Hold {
+  - datePlaced : Date
+  - status : String
+}
+
+Person <|-- Member
+Person <|-- Librarian
+
+Item <|-- Book
+Item <|-- DVD
+Item <|-- ReferenceItem
+
+Borrowable <|.. Book
+Borrowable <|.. DVD
+
+Member "1" --> "0..*" Hold
+Hold "0..*" --> "1" Item
 ' TODO: add boxes for Book and DVD. What differs between them — a whole class,
 '       or just the value of a loan-period field?
 
