@@ -1,3 +1,4 @@
+import javax.swing.text.MaskFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -70,6 +71,10 @@ public class Extractor {
     List<String> results = new ArrayList<>();
     // TODO: get a Matcher for text from COURSE_CODE, then loop with find(),
     //       adding matcher.group() to results each time.
+    Matcher m = COURSE_CODE.matcher(text);
+    while(m.find()) {
+      results.add(m.group());
+    }
     return results;
   }
 
@@ -85,6 +90,10 @@ public class Extractor {
     List<String> results = new ArrayList<>();
     // TODO: same loop as above, but add matcher.group(1) — the text captured by
     //       the parenthesised (\d{3}) group — instead of the whole match.
+    Matcher m = COURSE_CODE.matcher(text);
+    while(m.find()) {
+      results.add(m.group(1));
+    }
     return results;
   }
 
@@ -98,6 +107,7 @@ public class Extractor {
    */
   public static String maskEmails(String text) {
     // TODO: get a Matcher for text from EMAIL and return matcher.replaceAll(MASK).
-    return text;
+    Matcher m = EMAIL.matcher(text);
+    return m.replaceAll(MASK);
   }
 }
