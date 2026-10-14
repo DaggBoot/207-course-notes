@@ -1,8 +1,11 @@
+/**
+ * Package for constructing Rectangles.
+ */
 public class Rectangle {
-    private double width;
-    private double height;
+  private double width;
+  private double height;
 
-    /**
+  /**
      * Constructs a rectangle with the specified dimensions.
      *
      * @param w the width of the rectangle
